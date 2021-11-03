@@ -1,6 +1,15 @@
 from PyInquirer import prompt
 import csv
 
+def get_users(answers):
+    with open('users.csv', 'r') as f:
+        next(f)
+        infos = []
+        for line in f:
+            infos.append(line.rstrip())
+
+    return infos
+
 expense_questions = [
     {
         "type":"input",
@@ -13,9 +22,10 @@ expense_questions = [
         "message":"New Expense - Label: ",
     },
     {
-        "type":"input",
+        "type":"list",
         "name":"spender",
         "message":"New Expense - Spender: ",
+        "choices":get_users,
     },
 
 ]
@@ -35,5 +45,3 @@ def new_expense(*args):
         writer.writerow([infos["amount"]] + [infos["label"]] + [infos["spender"]])
     print("Expense Added !")
     return True
-
-
